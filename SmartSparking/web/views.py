@@ -15,17 +15,14 @@ def contactanos(request):
 def nosotros(request):
     return render(request, 'nosotros.html')
 
-def home2(request):
-    return render(request, 'home2.html')
-    
 def lista_estacionamientos(request):
     estacionamientos = Estacionamiento.objects.all()
     return render(request, 'into.html', {'estacionamientos': estacionamientos})
 
 def estados_estacionamiento(request, estacionamiento_id):
     estacionamiento = Estacionamiento.objects.get(id=estacionamiento_id)
-    estados = Estado.objects.filter(estacionamiento=estacionamiento)
-    return render(request, 'estados_estacionamiento.html', {'estacionamiento': estacionamiento, 'estados': estados})
+    estados = Estado.objects.filter(id_estacionamiento=estacionamiento)
+    return render(request, 'Estados.html', {'estacionamiento': estacionamiento, 'estados': estados})
 
 def empresas(request):
     empresas = Empresa.objects.all()
@@ -40,7 +37,7 @@ def login_view(request):
             empresa = Empresa.objects.get(correo=correo)
             if empresa.clave == clave:
                 estacionamientos = Estacionamiento.objects.all()
-                return render(request, 'into.html', {'estacionamientos': estacionamientos})
+                return lista_estacionamientos(request)
             else:
                 # La clave es incorrecta, mostrar un mensaje de error
                 messages.error(request, 'La clave ingresada es incorrecta.')
